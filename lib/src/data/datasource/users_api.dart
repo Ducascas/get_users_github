@@ -5,54 +5,62 @@ import 'package:get_users_github/src/models/user.dart';
 class UsersApi {
   final Dio dio;
 
-  UsersApi(this.dio);
+  UsersApi({required this.dio});
 
   Future<List<User>> getUsers() async {
     try {
       final response = await dio.get(baseUrl);
       if (response.statusCode == 200) {
         var data = response.data as List;
-        final users = data.map((user) => User.fromMap(user)).toList();
-        for (var user in users) {
-          user.followers = await _getFollowCount(user.followersUrl);
-          user.following = await _getFollowCount(user.followingUrl);
-        }
-        return users;
+        return data.map((user) => User.fromMap(user)).toList();
       } else {
         throw Exception();
       }
-    } catch (e) {
-      throw Exception('Failed to get users: $e');
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 403) {
+        throw Exception(
+            'Request failed with status: ${e.response?.statusCode}. Rate limit exceeded or access forbidden.');
+      } else {
+        throw Exception('Failed to get users: $e');
+      }
+    }
+  }
+
+  Future<User> getUserInfo(String login) async {
+    try {
+      final response = await dio.get('$baseUrl/$login');
+      if (response.statusCode == 200) {
+        var data = response.data;
+        return User.fromMap(data);
+      } else {
+        throw Exception();
+      }
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 403) {
+        throw Exception(
+            'Request failed with status: ${e.response?.data}. Rate limit exceeded or access forbidden.');
+      } else {
+        throw Exception('Failed to update info users: $e');
+      }
     }
   }
 
   Future<List<User>> searchUsers(String query) async {
-    final response = await dio.get('$searchUrl$query');
-    if (response.statusCode == 200) {
-      List<dynamic> data = response.data['items'];
-      final users = data.map((user) => User.fromMap(user)).toList();
-      for (var user in users) {
-        user.followers = await _getFollowCount(user.followersUrl);
-        user.following = await _getFollowCount(user.followingUrl);
-      }
-      return users;
-    } else {
-      throw Exception();
-    }
-  }
-
-  Future<int> _getFollowCount(String url) async {
     try {
-      final trimmedUrl = trimUrl(url);
-      final response = await dio.get(trimmedUrl);
+      final response = await dio.get('$searchUrl$query');
       if (response.statusCode == 200) {
-        List<dynamic> data = response.data;
-        return data.length;
+        List<dynamic> data = response.data['items'];
+        return data.map((user) => User.fromMap(user)).toList();
       } else {
-        throw Exception('Failed to get count');
+        throw Exception();
       }
-    } catch (e) {
-      throw Exception('Failed to get count: $e');
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 403) {
+        throw Exception(
+            'Request failed with status: ${e.response?.data}. Rate limit exceeded or access forbidden.');
+      } else {
+        throw Exception('Failed to search users: $e');
+      }
     }
   }
 }

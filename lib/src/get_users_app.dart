@@ -11,9 +11,9 @@ class GetUsersApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<UserCubit>(),
-      child: MaterialApp(
+      child: const MaterialApp(
         title: 'Github Users',
-        home: const UsersScreen(),
+        home: UsersScreen(),
       ),
     );
   }

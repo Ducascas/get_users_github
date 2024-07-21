@@ -4,8 +4,8 @@ class User {
   final String avatarUrl;
   final String followersUrl;
   final String followingUrl;
-  int followers;
-  int following;
+  int? followers;
+  int? following;
 
   User({
     required this.login,
@@ -24,6 +24,8 @@ class User {
       avatarUrl: map['avatar_url'],
       followersUrl: map['followers_url'],
       followingUrl: map['following_url'],
+      followers: map['followers'],
+      following: map['following'],
     );
   }
 }

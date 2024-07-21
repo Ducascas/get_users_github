@@ -17,6 +17,7 @@ class UserCubit extends Cubit<UserState> {
 
     try {
       final users = await userRepository.getUsers();
+      await userRepository.updateUsersInfo(users);
       emit(UserLoadedState(users: users));
     } catch (error) {
       emit(UserErrorState(error: error.toString()));
@@ -27,6 +28,7 @@ class UserCubit extends Cubit<UserState> {
     emit(UserLoadingState());
     try {
       final users = await userRepository.searchUsers(query);
+      await userRepository.updateUsersInfo(users);
       _setTabIndex(users);
       emit(UserLoadedState(users: users));
     } catch (error) {

@@ -15,7 +15,7 @@ Future<void> init() async {
       () => UserRepository(usersApi: sl()));
 
   //Datasource
-  sl.registerLazySingleton<UsersApi>(() => UsersApi(sl()));
+  sl.registerLazySingleton<UsersApi>(() => UsersApi(dio: sl()));
 
   //External
   sl.registerLazySingleton(() => Dio());

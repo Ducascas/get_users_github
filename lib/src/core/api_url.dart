@@ -6,3 +6,4 @@ const String followingUrl = '/following';
  String trimUrl(String url) {
   return url.replaceAll('{/other_user}', '');
 }
+

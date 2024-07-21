@@ -6,6 +6,23 @@ class UserRepository {
 
   UserRepository({required this.usersApi});
 
-  Future<List<User>> getUsers() => usersApi.getUsers();
-  Future<List<User>> searchUsers(String query) => usersApi.searchUsers(query);
+  Future<List<User>> getUsers() async {
+    return await usersApi.getUsers();
+  }
+
+  Future<List<User>> searchUsers(String query) async {
+    return await usersApi.searchUsers(query);
+  }
+
+  Future<User> getUserInfo(String login) async {
+    return await usersApi.getUserInfo(login);
+  }
+
+  Future<void> updateUsersInfo(List<User> users) async {
+    for (var user in users) {
+      final userInfo = await getUserInfo(user.login);
+      user.followers = userInfo.followers;
+      user.following = userInfo.following;
+    }
+  }
 }
