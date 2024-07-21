@@ -13,10 +13,6 @@ class GetUsersApp extends StatelessWidget {
       create: (context) => sl<UserCubit>(),
       child: MaterialApp(
         title: 'Github Users',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
         home: const UsersScreen(),
       ),
     );
