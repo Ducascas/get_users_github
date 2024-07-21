@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get_users_github/src/core/textstyle.dart';
+import 'package:get_users_github/src/core/text_style.dart';
 
 class NameUserText extends StatelessWidget {
   const NameUserText({super.key, required this.name});

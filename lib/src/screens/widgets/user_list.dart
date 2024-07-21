@@ -15,6 +15,10 @@ class UserList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    /*
+      Cоздаем список пользователей,ники которых попадают
+      в выборку между входящими данными
+    */
     final filteredUsers = users.where((user) {
       final firstLetter = user.login[0].toUpperCase();
 
