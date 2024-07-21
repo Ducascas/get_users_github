@@ -9,7 +9,7 @@ class GetUsersApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<UserCubit>(
+    return BlocProvider(
       create: (context) => sl<UserCubit>(),
       child: MaterialApp(
         title: 'Github Users',
